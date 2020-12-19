@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--名称空间：接口的全类名-->
+<mapper namespace="cn.nathen.dao.company.CompanyDao">
+
+    <!--结果集映射-->
+    <resultMap id="BaseResultMap" type="cn.nathen.domain.company.Company" autoMapping="true">
+        <id column="id" property="id"/>
+        <!--映射不同的字段: sql和实体类-->
+        <result column="expiration_date" property="expirationDate"/>
+        <result column="license_id" property="licenseId"/>
+        <result column="company_size" property="companySize"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from ss_company
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+<!--1. 配置视图解析器-->
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+    <!--配置前缀 ， WEB-INF目录是一个受保护的目录，外界通过浏览器没法访问web-inf目录下的内容，这里的内容只能通过请求转发到该目录的资源-->
+    <!--前缀-->
+    <property name="prefix" value="/WEB-INF/pages/"/>
+    <!--后缀-->
+    <property name="suffix" value=".jsp"/>
+</bean>
+
+<!--2. 开启包扫描(控制器IOC注解扫描) -->
+<context:component-scan base-package="cn.nathen.web"/>
+
+<!--3. 处理静态资源-->
+<mvc:default-servlet-handler/>
+
+<!--4. 先创建类型转换器-->
+    <bean class="cn.nathen.web.converter.StringToDateConverter" id="stringToDateConverter"/>
+<!--4.1 把类型转换器交给类型转换器的工厂-->
+    <bean class="org.springframework.context.support.ConversionServiceFactoryBean" id="conversionService">
+        <property name="converters">
+            <set>
+                <ref bean="stringToDateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+
+
+<!--把类型转换器的工厂交给注解驱动去启动-->
+<!--开启注解驱动-->
+<mvc:annotation-driven conversion-service="conversionService"/>
+
+</beans>
